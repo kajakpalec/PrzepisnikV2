@@ -27,7 +27,27 @@ const recipes = [{
 
 //Tutaj w zależności od tego czy bedzie true czy false to albo będzie widok pojedynczego przeisu, albo lista z przepisami wszystkimi
 let isSingleRecipe = true;
-
+const query=`{
+  przepisyCollection
+  {
+    items{
+      nazwa
+      krotkiOpis{
+        json
+      }
+      skladniki
+      przygotowanie{
+        json
+      }
+      zdjecie{
+        url
+      }
+      rodzaj
+      stopienTrudnosci
+      czasPrzygotowania
+    }
+  }
+}`;
 class App extends React.Component {
 
   render() {
