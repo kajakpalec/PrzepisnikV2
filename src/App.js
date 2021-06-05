@@ -15,18 +15,6 @@ import {BLOCKS,INLINES} from '@contentful/rich-text-types'
 //Myślę że mozna jakąś zmienną tutaj walnąć żeby tym sterowć, dzięki temu nie musimy
 //robić żadnego routingu (jajjjjj)
 
-// const recipes = [{
-//   name: 'Fajny Przepis',
-//   ingredients: 'Duzo soli',
-//   description: 'Dobrze wymieszaj'
-// },
-// {
-//   name: 'Fajny Przepis 2',
-//   ingredients: 'Duzo pieprzu',
-//   description: 'Dobrze wymieszaj'
-// },
-// ]; //wszystkie przepisy które przekazujemy do danej strony
-
 const RICHTEXT_OPIONS={
   renderNode:{
     [BLOCKS.PARAGRAPH]: (node,children)=>{
@@ -51,6 +39,7 @@ const query=`{
         json
       }
       zdjecie{
+        title
         url
       }
       rodzaj
@@ -59,8 +48,6 @@ const query=`{
     }
   }
 }`;
-//class App extends React.Component {
-
   function App() {
     const [przepisy, setPrzepisy] = useState(null);
 
@@ -96,8 +83,13 @@ const query=`{
     recipes.push(
       {
         name:przepisy[i].nazwa,
+        short_description:documentToReactComponents(przepisy[i].krotkiOpis.json,RICHTEXT_OPIONS),
         ingredients: przepisy[i].skladniki,
-        description: documentToReactComponents(przepisy[i].przygotowanie.json,RICHTEXT_OPIONS)
+        description: documentToReactComponents(przepisy[i].przygotowanie.json,RICHTEXT_OPIONS),
+        image: przepisy[i].zdjecie,
+        type: przepisy[i].rodzaj,
+        difficulty:przepisy[i].stopienTrudnosci,
+        time:przepisy[i].czasPrzygotowania,
       }
     )
   }
@@ -111,6 +103,6 @@ const query=`{
       </>
     )
   }
-//}
+
 
 export default App;
