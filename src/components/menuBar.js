@@ -1,14 +1,20 @@
 import React from 'react';
+import App from '../App';
 
-const list = ['Śniadanie', 'Deser', 'Danie wegańskie', 'Kolacja', 'Danie główne']
+const list = ['Wszystkie przepisy','Śniadanie', 'Deser', 'Danie wegańskie', 'Kolacja', 'Danie główne']
 
-const MenuBar = () => (
-    <>
+const MenuBar = ({handleClick}) => {
+
+    function handleButtonClick(obj) {
+        handleClick(obj);
+    }
+
+    return ( <>
     {    
         list.map((category)=>
-         (<button>{category}</button>))
+         (<button name={category} onClick={handleButtonClick.bind(this, category)}>{category}</button>))
     }   
-    </>
-)
+    </>)
+}
 
 export default MenuBar;

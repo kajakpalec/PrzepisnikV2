@@ -31,7 +31,9 @@ const query=`{
   
 function App() {
     const [przepisy, setPrzepisy] = useState(null);
-    const [isSingleRecipe, setIsSIngleRecipe] = useState(true);
+    const [isSingleRecipe, setIsSIngleRecipe] = useState(false);
+    //pokazywanie przpisów z danej kategorii
+    const [recInCategory, setRecInCategory] = useState(null);
 
   useEffect(() => {
     window
@@ -54,28 +56,32 @@ function App() {
         // rerender the entire component with new data
         setPrzepisy(data.przepisyCollection.items);
       });
-  }, );
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() =>  {setRecInCategory(przepisy)}, 0);
+  }, [przepisy]);
 
   if (!przepisy) {
     return "Loading...";
   }
 
+  function handleChange(value) {
+    if(value === 'Wszystkie przepisy') {
+      return setRecInCategory(przepisy);
+    }
 
-  // console.log(przepisy);
-  // //const wege = przepisy.find(obj => obj.czasPrzygotowania == 0.5);
-  // const wege = przepisy.filter(obj => {
-  //   return obj.rodzaj.includes('Zupa')
-  // })
-  //console.log(showPrzepisy('Zupa'));
-  //przepisy.map((przepis) => console.log(przepis.nazwa));
-
-  //console.log(przepisy);
+    const rec = przepisy.filter(obj => {
+      return obj.rodzaj.includes(value)
+    });
+    setRecInCategory(rec);
+  }
 
     return (
       <>
         <Header/>
-        <MenuBar />
-        {isSingleRecipe ? <SingleRecipe recipe={przepisy[0]}/> : <AllRecipesPage recipes={przepisy}/>}
+        <MenuBar handleClick={handleChange} />
+        {isSingleRecipe ? <SingleRecipe recipe={przepisy[0]}/> : <AllRecipesPage recipes={recInCategory ?  recInCategory : przepisy} />}
         <Footer />
       </>
     )
