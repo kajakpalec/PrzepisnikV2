@@ -1,31 +1,11 @@
-import React, { Children } from 'react';
+import React from 'react';
 import Footer from './components/footer';
 import AllRecipesPage from './pages/allRecipes';
 import Header from './components/header';
 import MenuBar from './components/menuBar';
 import SingleRecipe from './pages/singleRecipe';
 import { useState, useEffect } from "react";
-import {documentToReactComponents} from "@contentful/rich-text-react-renderer"
-import {BLOCKS,INLINES} from '@contentful/rich-text-types'
 
-
-//Tutaj jest template strony, Header, MenuBar i Footer są stałą częścią
-//Jedynie to czy mamy widok pojedynczego przepisu, czy widok wszystkich przepisów z danej
-//kategorii będzie się zmieniało.
-//Myślę że mozna jakąś zmienną tutaj walnąć żeby tym sterowć, dzięki temu nie musimy
-//robić żadnego routingu (jajjjjj)
-
-const RICHTEXT_OPIONS={
-  renderNode:{
-    [BLOCKS.PARAGRAPH]: (node,children)=>{
-      return <p>{children}</p>
-    }
-  }
-}
-
-var recipes=[]
-//Tutaj w zależności od tego czy bedzie true czy false to albo będzie widok pojedynczego przeisu, albo lista z przepisami wszystkimi
-let isSingleRecipe = true;
 const query=`{
   przepisyCollection
   {
@@ -48,8 +28,10 @@ const query=`{
     }
   }
 }`;
-  function App() {
+  
+function App() {
     const [przepisy, setPrzepisy] = useState(null);
+    const [isSingleRecipe, setIsSIngleRecipe] = useState(true);
 
   useEffect(() => {
     window
@@ -72,33 +54,28 @@ const query=`{
         // rerender the entire component with new data
         setPrzepisy(data.przepisyCollection.items);
       });
-  }, []);
+  }, );
 
   if (!przepisy) {
     return "Loading...";
   }
-  
-  for (var i=0;i<przepisy.length;i++)
-  {
-    recipes.push(
-      {
-        name:przepisy[i].nazwa,
-        short_description:documentToReactComponents(przepisy[i].krotkiOpis.json,RICHTEXT_OPIONS),
-        ingredients: przepisy[i].skladniki,
-        description: documentToReactComponents(przepisy[i].przygotowanie.json,RICHTEXT_OPIONS),
-        image: przepisy[i].zdjecie,
-        type: przepisy[i].rodzaj,
-        difficulty:przepisy[i].stopienTrudnosci,
-        time:przepisy[i].czasPrzygotowania,
-      }
-    )
-  }
-  console.log(przepisy.length);
+
+
+  // console.log(przepisy);
+  // //const wege = przepisy.find(obj => obj.czasPrzygotowania == 0.5);
+  // const wege = przepisy.filter(obj => {
+  //   return obj.rodzaj.includes('Zupa')
+  // })
+  //console.log(showPrzepisy('Zupa'));
+  //przepisy.map((przepis) => console.log(przepis.nazwa));
+
+  //console.log(przepisy);
+
     return (
       <>
         <Header/>
         <MenuBar />
-        {isSingleRecipe ? <SingleRecipe recipe={recipes[0]}/> : <AllRecipesPage recipes={recipes}/>}
+        {isSingleRecipe ? <SingleRecipe recipe={przepisy[0]}/> : <AllRecipesPage recipes={przepisy}/>}
         <Footer />
       </>
     )

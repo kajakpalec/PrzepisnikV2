@@ -1,13 +1,12 @@
 import React from 'react';
-import MenuItem from './menuItem';
 
-const list = ['Wege', 'Wegan', 'Obiad', 'Deser', 'Zupy']
+const list = ['Śniadanie', 'Deser', 'Danie wegańskie', 'Kolacja', 'Danie główne']
 
 const MenuBar = () => (
     <>
     {    
         list.map((category)=>
-         (<MenuItem name={category}/>))
+         (<button>{category}</button>))
     }   
     </>
 )
