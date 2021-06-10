@@ -1,5 +1,4 @@
 import React from 'react';
-import App from '../App';
 
 const list = ['Wszystkie przepisy','Śniadanie', 'Deser', 'Danie wegańskie', 'Kolacja', 'Danie główne']
 

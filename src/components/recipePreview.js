@@ -10,13 +10,17 @@ const RICHTEXT_OPIONS={
     }
   }
 
-const RecipePreview = ({recipe}) => {
+const RecipePreview = ({recipe, handleShowRecipe}) => {
+
+  function buttonClicked(obj) {
+    handleShowRecipe(obj);
+  }
 
    return (
       <>
         <h2>{recipe.nazwa}</h2>
         <p>{documentToReactComponents(recipe.krotkiOpis.json,RICHTEXT_OPIONS)}</p>
-        <button>Pokaż mnie</button> 
+        <button onClick={buttonClicked.bind(this, recipe.nazwa)}>Pokaż mnie</button> 
     </>
 )}
 

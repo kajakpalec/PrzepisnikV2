@@ -34,6 +34,7 @@ function App() {
     const [isSingleRecipe, setIsSIngleRecipe] = useState(false);
     //pokazywanie przpisów z danej kategorii
     const [recInCategory, setRecInCategory] = useState(null);
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
     window
@@ -68,6 +69,7 @@ function App() {
 
   function handleChange(value) {
     if(value === 'Wszystkie przepisy') {
+      setIsSIngleRecipe(false);
       return setRecInCategory(przepisy);
     }
 
@@ -75,13 +77,20 @@ function App() {
       return obj.rodzaj.includes(value)
     });
     setRecInCategory(rec);
+    setIsSIngleRecipe(false);
+  }
+
+  function handleShowRecipe(value) {
+    const rec = przepisy.find(obj => obj.nazwa === value);
+    setSelectedRecipe(rec);
+    setIsSIngleRecipe(true);
   }
 
     return (
       <>
         <Header/>
         <MenuBar handleClick={handleChange} />
-        {isSingleRecipe ? <SingleRecipe recipe={przepisy[0]}/> : <AllRecipesPage recipes={recInCategory ?  recInCategory : przepisy} />}
+        {isSingleRecipe ? <SingleRecipe recipe={selectedRecipe}/> : <AllRecipesPage recipes={recInCategory ?  recInCategory : przepisy} handleShowRecipe={handleShowRecipe} />}
         <Footer />
       </>
     )
